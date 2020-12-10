@@ -1,16 +1,66 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import axios from 'axios';
+
+
+
+
+/**
+ * APIs
+ * 1. Login / Create Acct
+ * 2. list all playlists (+ Drainlists)
+ * 3. Edit Drainlists
+ * 3. sync (cron style API)
+ */
+
+// UX is: go to site -> log in (or create)
+//  you are presented with a landing page which contains all of your drainLists (and the ability to create new ones, and a force sync button)
+//  you can then click a drain which takes you to the drain edit page or delete it, where you can then see the Drain, it's sources, and other data
+// Login / token process is a simple passthrough to the backend (for now it is a no-op, just assume Danny User)
+// Drainlist landing page needs to be made
+// Drainlist Detail page needs to be made
+
+class Landing extends React.Component  {
+    render() {
+        return (
+        <div>
+            <header onClick={() => alert(1)}>
+                {this.renderHeader()}
+            </header>
+            <div>
+                {this.renderDrains()}
+            </div>
+            <div>
+                {this.renderFooter()}
+            </div>
+        </div>
+    )
+    }
+    renderHeader() {
+        return this.getPlaylists()
+    }
+    renderDrains() {
+        return "drains"
+    }
+    renderFooter() {
+        return "foot"
+    }
+    getPlaylists() {
+        axios.get("http://localhost:5000/get_playlists").then((response) => {
+            console.log(response.data);
+            alert(1);
+        }, (resp) => console.log(resp));
+        return "a";
+    }
+}
 
 class Square extends React.Component {
   render() {
 
     return (
-      <button
-        className="square"
-        onClick={() => this.props.onClick()}
-      >
-        {this.props.value}
+      <button className="square" onClick={() => this.props.onClick()}>
+          {this.props.value}
       </button>
     );
   }
@@ -106,7 +156,7 @@ class Game extends React.Component {
 // ========================================
 
 ReactDOM.render(
-  <Game />,
+  <Landing />,
   document.getElementById('root')
 );
 
